@@ -11,9 +11,19 @@ angular.module('ethExplorer')
 	// get latest 50 blocks
 	$scope.blocks = [];
 	for (var i = 0; i < maxBlocks; ++i) {
-	    $scope.blocks.push(web3.eth.getBlock(blockNum - i));
-	}
-	
+        var block = web3.eth.getBlock(blockNum - i);
+
+        if (block.transactions.length > 0) {
+            var tx = web3.eth.getTransaction(block.transactions[0]);                        
+            var info = web3.eth.getTransactionReceipt(tx.hash);          
+            console.log(info);                         
+            tx = $.extend(tx, info);            
+            block = $.extend(block, tx);     
+        }
+
+	    $scope.blocks.push(block);
+	}    
+
         $scope.processRequest = function() {
              var requestStr = $scope.ethRequest.split('0x').join('');
 

@@ -1,20 +1,22 @@
 angular.module('ethExplorer')
     .controller('transactionInfosCtrl', function ($rootScope, $scope, $location, $routeParams,$q) {
 
-       var web3 = $rootScope.web3;
-	
-        $scope.init=function()
-        {
-            $scope.txId=$routeParams.transactionId;
+        var web3 = $rootScope.web3;
 
-            if($scope.txId!==undefined) { // add a test to check if it match tx paterns to avoid useless API call, clients are not obliged to come from the search form...
+        $scope.init = function () {
+            $scope.txId = $routeParams.transactionId;
+
+            if ($scope.txId !== undefined) { // add a test to check if it match tx paterns to avoid useless API call, clients are not obliged to come from the search form...
 
                 getTransactionInfos()
-                    .then(function(result){
+                    .then(function (result) {
+                        var txInfo = web3.eth.getTransactionReceipt($scope.txId);
+                        $scope.receiptData = JSON.stringify(txInfo, null, 2);
+                        $scope.contractAddress = txInfo.contractAddress;
                         //TODO Refactor this logic, asynchron calls + services....
                         var number = web3.eth.blockNumber;
 
-                    $scope.result = result;
+                        $scope.result = result;
 
                     if(result.blockHash!==undefined){
                         $scope.blockHash = result.blockHash;
@@ -82,6 +84,4 @@ angular.module('ethExplorer')
 
         };
         $scope.init();
-        console.log($scope.result);
-
     });
