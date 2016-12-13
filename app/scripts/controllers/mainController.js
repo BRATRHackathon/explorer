@@ -15,8 +15,7 @@ angular.module('ethExplorer')
 
         if (block.transactions.length > 0) {
             var tx = web3.eth.getTransaction(block.transactions[0]);                        
-            var info = web3.eth.getTransactionReceipt(tx.hash);          
-            console.log(info);                         
+            var info = web3.eth.getTransactionReceipt(tx.hash);                                          
             tx = $.extend(tx, info);            
             block = $.extend(block, tx);     
         }

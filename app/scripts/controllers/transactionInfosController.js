@@ -67,12 +67,14 @@ angular.module('ethExplorer')
 
             function getTransactionInfos(){
                 var deferred = $q.defer();
-
+                console.log($scope.txId);
                 web3.eth.getTransaction($scope.txId,function(error, result) {
                     if(!error){
+                        console.log('ok');
                         deferred.resolve(result);
                     }
                     else{
+                        console.log('error:' + error);
                         deferred.reject(error);
                     }
                 });
